@@ -34,7 +34,7 @@ CREATE TABLE tb_reimbursements (
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES tb_users(id)
 );
 
-CREATE TABLE tb_reimbursement_history (
+CREATE TABLE tb_reimbursement_histories (
     id BIGSERIAL PRIMARY KEY,
     reimbursement_id BIGINT NOT NULL,
     changed_by_user_id BIGINT NOT NULL,
