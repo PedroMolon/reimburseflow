@@ -3,6 +3,7 @@ package com.pedromolon.reimburseflow.domain;
 import com.pedromolon.reimburseflow.domain.enums.ReimbursementCategory;
 import com.pedromolon.reimburseflow.domain.enums.ReimbursementStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Reimbursement {
@@ -13,6 +14,16 @@ public class Reimbursement {
     private final ReimbursementCategory category;
     private final ReimbursementStatus status;
     private final LocalDateTime createdAt;
+
+    public Reimbursement(Long userId, String description, BigDecimal amount, ReimbursementCategory category) {
+        this.id = null;
+        this.userId = userId;
+        this.description = description;
+        this.amount = new Money(amount);
+        this.category = category;
+        this.status = ReimbursementStatus.DRAFT;
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Reimbursement(Long id, Long userId, String description, Money amount, ReimbursementCategory category, ReimbursementStatus status, LocalDateTime createdAt) {
         this.id = id;
