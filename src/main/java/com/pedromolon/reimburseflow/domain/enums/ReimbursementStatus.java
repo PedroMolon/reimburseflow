@@ -1,7 +1,9 @@
 package com.pedromolon.reimburseflow.domain.enums;
 
 public enum ReimbursementStatus {
-    PENDING,
+    DRAFT,
+    SUBMITTED,
     APPROVED,
-    REJECTED
+    REJECTED,
+    PAID
 }
