@@ -3,12 +3,20 @@ package com.pedromolon.reimburseflow.infrastructure.entity;
 import com.pedromolon.reimburseflow.domain.enums.ReimbursementCategory;
 import com.pedromolon.reimburseflow.domain.enums.ReimbursementStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_reimbursements")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ReimbursementEntity {
 
     @Id
