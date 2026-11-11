@@ -64,22 +64,22 @@ public class Reimbursement {
     }
 
     public void submit() {
-        if (this.status == ReimbursementStatus.DRAFT) {
-            throw new IllegalStateException("Reimbursement cannot be submitted in DRAFT status");
+        if (this.status != ReimbursementStatus.DRAFT) {
+            throw new IllegalStateException("Reimbursement can just be submitted in DRAFT status");
         }
         this.status = ReimbursementStatus.SUBMITTED;
     }
 
     public void approve() {
-        if (this.status == ReimbursementStatus.SUBMITTED) {
-            throw new IllegalStateException("Reimbursement cannot be approved in SUBMITTED status");
+        if (this.status != ReimbursementStatus.SUBMITTED) {
+            throw new IllegalStateException("Reimbursement can just be approved in SUBMITTED status");
         }
         this.status = ReimbursementStatus.APPROVED;
     }
 
     public void reject(String comment) {
-        if (this.status == ReimbursementStatus.SUBMITTED) {
-            throw new IllegalStateException("Reimbursement cannot be rejected in SUBMITTED status");
+        if (this.status != ReimbursementStatus.SUBMITTED) {
+            throw new IllegalStateException("Reimbursement can just be rejected in SUBMITTED status");
         }
         if (comment == null || comment.isBlank()) {
             throw new IllegalArgumentException("Comment cannot be null or blank");
@@ -88,8 +88,8 @@ public class Reimbursement {
     }
 
     public void pay() {
-        if (this.status == ReimbursementStatus.APPROVED) {
-            throw new IllegalStateException("Only approved status reimbursement can be paid");
+        if (this.status != ReimbursementStatus.APPROVED) {
+            throw new IllegalStateException("Reimbursement can just be paid in APPROVED status");
         }
         this.status = ReimbursementStatus.PAID;
     }
