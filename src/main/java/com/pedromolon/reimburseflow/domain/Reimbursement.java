@@ -12,7 +12,7 @@ public class Reimbursement {
     private final String description;
     private final Money amount;
     private final ReimbursementCategory category;
-    private final ReimbursementStatus status;
+    private ReimbursementStatus status;
     private final LocalDateTime createdAt;
 
     public Reimbursement(Long userId, String description, BigDecimal amount, ReimbursementCategory category) {
@@ -62,4 +62,36 @@ public class Reimbursement {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public void submit() {
+        if (this.status == ReimbursementStatus.DRAFT) {
+            throw new IllegalStateException("Reimbursement cannot be submitted in DRAFT status");
+        }
+        this.status = ReimbursementStatus.SUBMITTED;
+    }
+
+    public void approve() {
+        if (this.status == ReimbursementStatus.SUBMITTED) {
+            throw new IllegalStateException("Reimbursement cannot be approved in SUBMITTED status");
+        }
+        this.status = ReimbursementStatus.APPROVED;
+    }
+
+    public void reject(String comment) {
+        if (this.status == ReimbursementStatus.SUBMITTED) {
+            throw new IllegalStateException("Reimbursement cannot be rejected in SUBMITTED status");
+        }
+        if (comment == null || comment.isBlank()) {
+            throw new IllegalArgumentException("Comment cannot be null or blank");
+        }
+        this.status = ReimbursementStatus.REJECTED;
+    }
+
+    public void pay() {
+        if (this.status == ReimbursementStatus.APPROVED) {
+            throw new IllegalStateException("Only approved status reimbursement can be paid");
+        }
+        this.status = ReimbursementStatus.PAID;
+    }
+
 }
