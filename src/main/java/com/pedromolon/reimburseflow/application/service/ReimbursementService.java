@@ -10,6 +10,7 @@ import com.pedromolon.reimburseflow.infrastructure.repository.SpringReimbursemen
 import com.pedromolon.reimburseflow.infrastructure.repository.SpringUserRepository;
 import com.pedromolon.reimburseflow.infrastructure.web.dto.ReimbursementRequestDTO;
 import com.pedromolon.reimburseflow.infrastructure.web.dto.ReimbursementResponseDTO;
+import com.pedromolon.reimburseflow.infrastructure.web.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class ReimbursementService {
     @Transactional
     public ReimbursementResponseDTO create(ReimbursementRequestDTO request, String userEmail) {
         UserEntity user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         ReimbursementEntity entity = reimbursementMapper.toEntity(request, user);
         ReimbursementEntity savedEntity = reimbursementRepository.save(entity);
@@ -112,7 +113,7 @@ public class ReimbursementService {
         reimbursementRepository.save(reimbursement);
 
         UserEntity user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         ReimbursementHistoryEntity reimbursementHistory = new ReimbursementHistoryEntity();
         reimbursementHistory.setReimbursement(reimbursement);
