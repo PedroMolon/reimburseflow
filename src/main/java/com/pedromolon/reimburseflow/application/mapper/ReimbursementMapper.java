@@ -18,7 +18,7 @@ public class ReimbursementMapper {
         entity.setUser(user);
         entity.setDescription(request.description());
         entity.setAmount(request.amount());
-        entity.setCategory(ReimbursementCategory.valueOf(request.category()));
+        entity.setCategory(ReimbursementCategory.valueOf(String.valueOf(request.category())));
         entity.setStatus(ReimbursementStatus.DRAFT);
         entity.setCreatedAt(LocalDateTime.now());
         return entity;

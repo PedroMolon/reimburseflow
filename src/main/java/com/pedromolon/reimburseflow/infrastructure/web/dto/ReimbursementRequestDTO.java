@@ -16,7 +16,6 @@ public record ReimbursementRequestDTO(
         @Positive(message = "Amount must be greater than zero")
         BigDecimal amount,
 
-        @NotBlank(message = "Category is required")
-        String category
+        com.pedromolon.reimburseflow.domain.enums.ReimbursementCategory category
 ) {
 }
