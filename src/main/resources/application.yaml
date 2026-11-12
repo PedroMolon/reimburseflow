@@ -22,3 +22,5 @@ jwt:
   rsa:
     public-key: classpath:certs/app.pub
     private-key: classpath:certs/app.key
+  expiration:
+    seconds: 86400
