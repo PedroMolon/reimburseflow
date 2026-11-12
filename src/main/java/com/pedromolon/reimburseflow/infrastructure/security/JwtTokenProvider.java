@@ -1,52 +1,39 @@
 package com.pedromolon.reimburseflow.infrastructure.security;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.pedromolon.reimburseflow.infrastructure.entity.RoleEntity;
+import com.pedromolon.reimburseflow.infrastructure.entity.UserEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Component
 public class JwtTokenProvider {
 
-    private final JwtEncoder jwtEncoder;
-    private final JwtDecoder jwtDecoder;
+    @Autowired
+    private JwtEncoder jwtEncoder;
 
-    @Value("${jwt.expiration.seconds}")
-    private long expirationSeconds;
-
-    public JwtTokenProvider(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
-        this.jwtEncoder = jwtEncoder;
-        this.jwtDecoder = jwtDecoder;
-    }
-
-    public String generateToken(String username) {
+    public String generateToken(UserEntity user){
         Instant now = Instant.now();
-        Instant validity = now.plus(expirationSeconds, ChronoUnit.SECONDS);
+        long expiresIn = 3600L;
+
+        List<String> roles = user.getRoles().stream()
+                .map(RoleEntity::getName)
+                .toList();
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("reimburseflow-api")
+                .issuer("minha-api")
+                .subject(user.getName())
+                .claim("userId", user.getId().toString())
+                .claim("email", user.getEmail())
+                .claim("roles", roles)
                 .issuedAt(now)
-                .expiresAt(validity)
-                .subject(username)
+                .expiresAt(now.plusSeconds(expiresIn))
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            jwtDecoder.decode(token);
-            return true;
-        } catch (JwtException e) {
-            return false;
-        }
-    }
-
-    public String getUsernameFromToken(String token) {
-        Jwt jwt = jwtDecoder.decode(token);
-        return jwt.getSubject();
     }
 
 }
